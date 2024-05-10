@@ -64,3 +64,67 @@ export const feedbackData = [
     icon: TextCursor
   }
 ];
+
+export const strategies = [
+  { text: "Leverage automation to move fast" },
+  { text: "Always give customers a human to chat to" },
+  { text: "Automate customer support and close leads faster" }
+];
+
+export const pricingData = [
+  {
+    title: "Startup",
+    price: "$17",
+    features: [
+      "Up to 50 reviews/month",
+      "Drive more feedback and 5-star reviews",
+      "1 individual user",
+      "Customize your survey and widget",
+      "Basic email support",
+      "14 Day Free Trial"
+    ],
+    due: 'per month',
+    status: ""
+  },
+  {
+    title: "Growth",
+    price: "$47",
+    features: [
+      "Up to 200 reviews/month",
+      "Basic reporting and analytics",
+      "1 individual user",
+      "Up to 200 feedback ratings per month",
+      "Preferred email support",
+      "14 Day Free Trial"
+    ],
+    due: 'per month',
+    status: 'Popular'
+  },
+  {
+    title: "Business",
+    price: "$77",
+    features: [
+      "Up to 1,000 reviews/month",
+      "Advanced reporting and analytics",
+      "Remove TrustLoop branding",
+      "Up to 1,000 feedback ratings per month",
+      "Priority chat & email support",
+      "14 Day Free Trial"
+    ],
+    due: 'per month',
+    status: 'Best'
+  },
+  {
+    title: "Enterprise",
+    price: "Contact Us",
+    features: [
+      "Unlimited reviews/month",
+      "Early access to advanced features",
+      "Up to 5 individual users",
+      "Unlimited feedback ratings per month",
+      "Priority chat & 24/7 email support"
+    ],
+    due: '',
+    status: ''
+  }
+];

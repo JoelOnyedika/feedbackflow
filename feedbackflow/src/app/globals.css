@@ -74,3 +74,15 @@
       @apply bg-background text-foreground;
     }
   }
+
+.neon {
+  color: #fff;
+  text-shadow: 0 0 10px #fff, 
+               0 0 20px #ff00ff, 
+               0 0 30px #ff00ff, 
+               0 0 40px #ff00ff, 
+               0 0 70px #ff00ff, 
+               0 0 80px #ff00ff, 
+               0 0 100px #ff00ff, 
+               0 0 150px #ff00ff;
+}
