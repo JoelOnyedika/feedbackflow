@@ -12,7 +12,7 @@ export const signupFormSchema = z.object({
   }),
 });
 
-export const LoginFormSchema = z.object({
+export const loginFormSchema = z.object({
   username: z.string(). describe('Username').min(2, {
     message: "Username must be at least 2 characters.",
   }),

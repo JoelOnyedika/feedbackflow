@@ -1,5 +1,5 @@
 // constants.js
-import { MessagesSquare, Sparkles, Laugh, TextCursor, Command, PartyPopper} from 'lucide-react';
+import { MessagesSquare, Sparkles, Laugh, TextCursor, Command, PartyPopper, LayoutDashboard, ScanEye, SquareGanttChart, Wrench, CodeXml} from 'lucide-react';
 
 export const navbarRoutes = [
   { name: 'Home', route: '/Home' },
@@ -128,3 +128,17 @@ export const pricingData = [
     status: ''
   }
 ];
+
+interface SidebarItem {
+  name: string;
+  option: string;
+  icon: any; // Define the type of icon as a React component
+}
+
+export const sidebarData: SidebarItem[] = [
+    {name: "Dashboard", option: "dashboard", icon: LayoutDashboard},
+    {name: "Reviews", option: "reviews", icon: ScanEye},
+    {name: "Plan", option: "plan", icon: SquareGanttChart},
+    {name: "Survey Builder", option: "survey-builder", icon: Wrench},
+    {name: "Widget", option: "widget", icon: CodeXml}
+]
