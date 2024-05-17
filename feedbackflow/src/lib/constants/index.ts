@@ -1,5 +1,5 @@
 // constants.js
-import { MessagesSquare, Sparkles, Laugh, TextCursor, Command, PartyPopper, LayoutDashboard, ScanEye, SquareGanttChart, Wrench, CodeXml} from 'lucide-react';
+import { MessagesSquare, Sparkles, Laugh, TextCursor, Command, PartyPopper, LayoutDashboard, ScanEye, SquareGanttChart, Wrench, CodeXml, Delete, Check, SlidersVertical, List, User, } from 'lucide-react';
 
 export const navbarRoutes = [
   { name: 'Home', route: '/Home' },
@@ -142,3 +142,39 @@ export const sidebarData: SidebarItem[] = [
     {name: "Survey Builder", option: "survey-builder", icon: Wrench},
     {name: "Widget", option: "widget", icon: CodeXml}
 ]
+
+export const surveyQuestionOptions = [
+  {
+    icon: Delete,
+    name: "Short Question",
+    option: "short-question"
+  },
+  {
+    icon: Check,
+    name: "Yes or No",
+    option: "yes-no"
+  },
+  {
+    icon: SlidersVertical,
+    name: "Sliding",
+    option: "sliding"
+  },
+  {
+    icon: List,
+    name: "Multiple Choice",
+    option: "multiple-choice"
+  },
+  {
+    icon: User,
+    name: "Contact Info",
+    option: "contact-info"
+  }
+];
+
+export const multipleChoiceOptions = [
+    { id: 'satisfied', emoji: '😊', label: 'Satisfied' },
+    { id: 'dissatisfied', emoji: '😞', label: 'Dissatisfied' },
+    { id: 'neutral', emoji: '😐', label: 'Neutral' },
+    { id: 'excited', emoji: '😆', label: 'Excited' },
+    { id: 'frustrated', emoji: '😠', label: 'Frustrated' }
+  ];

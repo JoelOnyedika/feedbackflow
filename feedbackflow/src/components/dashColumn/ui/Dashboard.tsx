@@ -6,9 +6,9 @@ export default function Dashboard () {
   return (
     <main className="flex flex-col gap-6 p-4 md:p-6">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <Card>
+        <Card className="">
           <CardHeader className="space-y-5">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between space-x-5">
               <CardTitle>Latest Reviews</CardTitle>
             </div>
             <div className="flex justify-between mt-8">
@@ -16,6 +16,19 @@ export default function Dashboard () {
               <span className="text-sm text-gray-500 dark:text-gray-400">Date</span>
             </div>
           </CardHeader>
+          <CardContent>
+            <div className="flex justify-between">
+              <div className="flex items-center gap-0.5">
+                <StarIcon className="h-4 w-4 fill-primary" />
+                <StarIcon className="h-4 w-4 fill-primary" />
+                <StarIcon className="h-4 w-4 fill-primary" />
+                <StarIcon className="h-4 w-4 fill-primary" />
+                <StarIcon className="h-4 w-4 fill-primary" />
+              </div>
+              
+              <span className="text-sm text-gray-500 dark:text-gray-400">1st, jan 2024</span>
+            </div>
+          </CardContent>
           <CardContent>
             <div className="flex justify-between">
               <div className="flex items-center gap-0.5">
