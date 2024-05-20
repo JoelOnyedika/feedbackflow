@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
+import ReactContextProvider from "@/lib/recoil/RecoilContextProvider"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="max-w-4xl mx-auto">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ReactContextProvider>
+          {children}
+        </ReactContextProvider>
+        </body>
     </html>
   );
 }

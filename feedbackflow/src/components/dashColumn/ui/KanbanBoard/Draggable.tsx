@@ -1,7 +1,15 @@
 import React, { useRef } from 'react';
 import { AlignCenter, PencilLine, ChevronDown, ChevronUp } from 'lucide-react';
+import { questionListSelector, activeQuestionSelector, } from '@/lib/recoil/selectors';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil'
+import { activeQuestionIdState } from '@/lib/recoil/atoms';
+
 
 const Draggable = () => {
+  const [questionId, setQuestionId] = useRecoilState(activeQuestionIdState);
+  const questionList = useRecoilValue(questionListSelector);
+  const setActiveQuestion = useSetRecoilState(activeQuestionSelector);
+  
   const scrollRef = useRef(null);
 
   const scrollDown = () => {
@@ -16,17 +24,24 @@ const Draggable = () => {
     }
   };
 
+  const handleDraggableClick = (question: any) => {
+    setActiveQuestion(question);
+    setQuestionId(question.id);
+  }
+
   return (
-    <div className="border border-solid rounded-lg p-6 h-auto ">
-      <div className="overflow-y-auto h-96" ref={scrollRef}>
-        {Array.from({ length: 10 }).map((_, i) => (
-          <div key={i} className="my-5">
-            <div className="inline-flex items-center justify-center whitespace-nowrap border border-solid rounded-lg p-5 space-x-5">
+    <div className="border border-solid rounded-lg p-6 h-auto w-96 ">
+      <div className="overflow-y-auto h-60" ref={scrollRef}>
+        {questionList.map((data, index) => (
+          <div key={index} className="my-5 animate-in" >
+            <div className="inline-flex items-center justify-center whitespace-nowrap border border-solid rounded-lg p-5 space-x-5" onClick={() => handleDraggableClick(data)}>
+              
               <AlignCenter className="w-6 h-6 text-blue-500" />
               <div className="p-2 rounded-md bg-purple-500 text-white">
+                {data.option}
                 <PencilLine className="w-6 h-6 mr-3" />
               </div>
-              <h3 className="text-lg font-bold">Kanban {i + 1}</h3>
+              <h3 className="text-lg font-bold">{data.question} </h3>
             </div>
           </div>
         ))}
