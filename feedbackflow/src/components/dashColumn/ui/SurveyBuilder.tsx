@@ -1,16 +1,47 @@
 import Draggable from "@/components/dashColumn/ui/KanbanBoard/Draggable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SurveyBox from '@/components/dashColumn/ui/SurveyBuilderUI/SurveyBox';
-import {Contact, YesOrNo, ShortQuestion, SlidingRating, MultipleChoice } from '@/components/dashColumn/ui/SurveyBuilderUI/ui';
-import { useState } from "react";
+import { Contact, YesOrNo, ShortQuestion, SlidingRating, MultipleChoice } from '@/components/dashColumn/ui/SurveyBuilderUI/ui';
+import { useState, useEffect } from "react";
 import Questions from '@/components/dashColumn/ui/QuestionTypes/Questions';
+import { useRecoilValue } from 'recoil';
+import { activeQuestionIdSelector, questionListSelector } from '@/lib/recoil/selectors';
 
 const SurveyBuilder = () => {
-  const [questionType, setQuestionType] = useState("short-question")
+  const questionId = useRecoilValue(activeQuestionIdSelector);
+  const questions = useRecoilValue(questionListSelector);
+  const [questionType, setQuestionType] = useState("short-question");
 
-function handleQuestionTypeChange(questionType: string) {
-    setQuestionType(questionType)
-  }
+  const handleRenderSurveyQuestionChange = () => {
+    if (questionId) {
+      const foundQuestion = questions.find(question => question.id === questionId);
+      if (foundQuestion) {
+        setQuestionType(foundQuestion.option);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleRenderSurveyQuestionChange();
+  }, [questionId, questions]);
+
+  const renderQuestion = (question: string) => {
+    switch (question) {
+      case "contact-info":
+        return <Contact />;
+      case "yes-no":
+        return <YesOrNo />;
+      case "short-question":
+        return <ShortQuestion />;
+      case "sliding":
+        return <SlidingRating />;
+      case "multiple-choice":
+        return <MultipleChoice />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="my-4 mx-4">
       <div className="whitespace-nowrap flex flex-col md:flex-row mb-4">
@@ -19,7 +50,7 @@ function handleQuestionTypeChange(questionType: string) {
           Edit and modify your survey{" "}
         </h4>
       </div>
-      
+
       <Tabs defaultValue="lessthan5" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="lessthan5" className="text-blue-500">Less than 5 star review 💪</TabsTrigger>
@@ -27,7 +58,7 @@ function handleQuestionTypeChange(questionType: string) {
         </TabsList>
         <div className="mt-4 mb-4">
           <h4 className="text-lg font-bold">
-          Survey Question {questionType}
+            Survey Question {questionType}
           </h4>
         </div>
         <TabsContent value="lessthan5">
@@ -36,14 +67,13 @@ function handleQuestionTypeChange(questionType: string) {
               <Draggable />
             </div>
             <div>
-                <SurveyBox>
-{renderQuestion(questionType)}
-               </SurveyBox>
+              <SurveyBox>
+                {renderQuestion(questionType)}
+              </SurveyBox>
             </div>
             <div>
-              <Questions handleQuestionTypeChange={handleQuestionTypeChange} selectedType={questionType} />
+              <Questions handleQuestionTypeChange={setQuestionType} selectedType={questionType} />
             </div>
-            
           </div>
         </TabsContent>
       </Tabs>
@@ -52,18 +82,3 @@ function handleQuestionTypeChange(questionType: string) {
 };
 
 export default SurveyBuilder;
-
-const renderQuestion = (question: string) => {
-  switch (question) {
-    case "contact-info":
-      return <Contact />
-    case "yes-no":
-      return <YesOrNo />
-    case "short-question":
-      return <ShortQuestion />
-    case "sliding":
-      return <SlidingRating />
-    case "multiple-choice":
-      return <MultipleChoice />
-  }
-}
