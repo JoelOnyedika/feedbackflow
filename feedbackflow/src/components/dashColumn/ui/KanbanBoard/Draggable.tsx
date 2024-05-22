@@ -32,6 +32,7 @@ const Draggable = () => {
   return (
     <div className="border border-solid rounded-lg p-6 h-auto w-96 ">
       <div className="overflow-y-auto h-60" ref={scrollRef}>
+        
         {questionList.map((data, index) => (
           <div key={index} className="my-5 animate-in" >
             <div className="inline-flex items-center justify-center whitespace-nowrap border border-solid rounded-lg p-5 space-x-5" onClick={() => handleDraggableClick(data)}>

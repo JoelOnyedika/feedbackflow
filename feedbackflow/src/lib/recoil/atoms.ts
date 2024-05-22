@@ -3,7 +3,13 @@ import { atom } from 'recoil';
 
 export const questionListState = atom({
   key: 'questionListState', 
-  default: [],
+  default: [
+    {
+      id: 'intro',
+    question: 'what do you think of our application so far?',
+    option: null
+    }
+  ],
 });
 
 export const activeQuestionState = atom({

@@ -168,7 +168,8 @@ export const surveyQuestionOptions = [
     icon: User,
     name: "Contact Info",
     option: "contact-info"
-  }
+  },
+  
 ];
 
 export const multipleChoiceOptions = [

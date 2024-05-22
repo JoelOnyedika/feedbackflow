@@ -1,7 +1,7 @@
 import Draggable from "@/components/dashColumn/ui/KanbanBoard/Draggable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SurveyBox from '@/components/dashColumn/ui/SurveyBuilderUI/SurveyBox';
-import { Contact, YesOrNo, ShortQuestion, SlidingRating, MultipleChoice } from '@/components/dashColumn/ui/SurveyBuilderUI/ui';
+import { Contact, YesOrNo, ShortQuestion, SlidingRating, MultipleChoice, Rating } from '@/components/dashColumn/ui/SurveyBuilderUI/ui';
 import { useState, useEffect } from "react";
 import Questions from '@/components/dashColumn/ui/QuestionTypes/Questions';
 import { useRecoilValue } from 'recoil';
@@ -10,7 +10,7 @@ import { activeQuestionIdSelector, questionListSelector } from '@/lib/recoil/sel
 const SurveyBuilder = () => {
   const questionId = useRecoilValue(activeQuestionIdSelector);
   const questions = useRecoilValue(questionListSelector);
-  const [questionType, setQuestionType] = useState("short-question");
+  const [questionType, setQuestionType] = useState(null);
 
   const handleRenderSurveyQuestionChange = () => {
     if (questionId) {
@@ -38,7 +38,7 @@ const SurveyBuilder = () => {
       case "multiple-choice":
         return <MultipleChoice />;
       default:
-        return null;
+        return <Rating/>;
     }
   };
 
