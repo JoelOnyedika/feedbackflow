@@ -7,7 +7,20 @@ export const questionListState = atom({
     {
       id: 'intro',
     question: 'what do you think of our application so far?',
-    option: null
+    option: null,
+      idx: 1,
+    }
+  ],
+});
+
+export const higherQuestionListState = atom({
+  key: 'higherQuestionListState', 
+  default: [
+    {
+      id: 'intro',
+    question: 'what do you think of our application so far?',
+    option: null,
+      idx: 1,
     }
   ],
 });

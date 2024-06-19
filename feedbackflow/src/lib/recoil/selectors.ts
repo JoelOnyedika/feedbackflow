@@ -1,11 +1,19 @@
 
 import { selector } from 'recoil';
-import { questionListState, activeQuestionState, activeQuestionIdState } from './atoms'
+import { questionListState, activeQuestionState, activeQuestionIdState, higherQuestionListState } from './atoms'
 
-export const questionListSelector = selector({
-  key: 'questionListSelector',
+export const lessThanFiveStarQuestionListSelector = selector({
+  key: 'lessThanFiveStarQuestionListSelector',
   get: ({ get }) => {
     const questions = get(questionListState);
+    return questions;
+  },
+});
+
+export const higherThanFiveStarQuestionListSelector = selector({
+  key: 'questionListSelectorHigher',
+  get: ({ get }) => {
+    const questions = get(higherQuestionListState);
     return questions;
   },
 });

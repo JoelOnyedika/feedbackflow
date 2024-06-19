@@ -5,18 +5,24 @@ import { Contact, YesOrNo, ShortQuestion, SlidingRating, MultipleChoice, Rating 
 import { useState, useEffect } from "react";
 import Questions from '@/components/dashColumn/ui/QuestionTypes/Questions';
 import { useRecoilValue } from 'recoil';
-import { activeQuestionIdSelector, questionListSelector } from '@/lib/recoil/selectors';
+import { activeQuestionIdSelector, lessThanFiveStarQuestionListSelector, higherThanFiveStarQuestionListSelector } from '@/lib/recoil/selectors';
 
 const SurveyBuilder = () => {
   const questionId = useRecoilValue(activeQuestionIdSelector);
-  const questions = useRecoilValue(questionListSelector);
+  const questions = useRecoilValue(lessThanFiveStarQuestionListSelector);
   const [questionType, setQuestionType] = useState(null);
+const [questionIdx, setQuestionIdx] = useState(1);
+  const questionList = useRecoilValue(lessThanFiveStarQuestionListSelector);
+  
 
+  const questionListHigher = useRecoilValue(higherThanFiveStarQuestionListSelector);
+  
   const handleRenderSurveyQuestionChange = () => {
     if (questionId) {
       const foundQuestion = questions.find(question => question.id === questionId);
       if (foundQuestion) {
         setQuestionType(foundQuestion.option);
+        setQuestionIdx(questionId === 'intro' ? 1 : foundQuestion.idx + 1);
       }
     }
   };
@@ -25,14 +31,16 @@ const SurveyBuilder = () => {
     handleRenderSurveyQuestionChange();
   }, [questionId, questions]);
 
-  const renderQuestion = (question: string) => {
-    switch (question) {
+  const renderQuestion = (type: string, questionId: string) => {
+    if (type === 'intro')
+      return null
+    switch (type) {
       case "contact-info":
         return <Contact />;
       case "yes-no":
         return <YesOrNo />;
       case "short-question":
-        return <ShortQuestion />;
+        return <ShortQuestion questionId={questionId} questions={questions}/>;
       case "sliding":
         return <SlidingRating />;
       case "multiple-choice":
@@ -58,17 +66,46 @@ const SurveyBuilder = () => {
         </TabsList>
         <div className="mt-4 mb-4">
           <h4 className="text-lg font-bold">
-            Survey Question {questionType}
+            Survey Question
           </h4>
         </div>
         <TabsContent value="lessthan5">
           <div className="flex gap-4">
             <div>
-              <Draggable />
+              <Draggable showDraggableIcon={true} questionList={questionList} />
             </div>
             <div>
+              
               <SurveyBox>
-                {renderQuestion(questionType)}
+                <div>
+                  <div>
+                    <span>{questionIdx}/{questions.length}</span>
+                  </div>
+                  <div>{renderQuestion(questionType, questionId)}
+                  </div>
+                </div>
+              </SurveyBox>
+            </div>
+            <div>
+              <Questions handleQuestionTypeChange={setQuestionType} selectedType={questionType} />
+            </div>
+          </div>
+        </TabsContent>
+        <TabsContent value="5starreview">
+          <div className="flex gap-4">
+            <div>
+              <Draggable showDraggableIcon={false} questionList={questionListHigher} />
+            </div>
+            <div>
+              
+              <SurveyBox>
+                <div>
+                  <div>
+                    <span>{questionIdx}/{questions.length}</span>
+                  </div>
+                  <div>{renderQuestion(questionType, questions.question)}
+                  </div>
+                </div>
               </SurveyBox>
             </div>
             <div>

@@ -1,13 +1,19 @@
 import React, { useRef } from 'react';
 import { AlignCenter, PencilLine, ChevronDown, ChevronUp } from 'lucide-react';
-import { questionListSelector, activeQuestionSelector, } from '@/lib/recoil/selectors';
+import { lessThanFiveStarQuestionListSelector, activeQuestionSelector, } from '@/lib/recoil/selectors';
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil'
 import { activeQuestionIdState } from '@/lib/recoil/atoms';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { EditSurveyDialog } from '@/components/dashColumn/ui/SurveyBuilderUI/ui/EditSurveyDialog';
 
 
-const Draggable = () => {
+interface IDraggableProps {
+  questionList: any[];
+  showDraggableIcon: boolean;
+}
+const Draggable = ({showDraggableIcon, questionList}: IDraggableProps ) => {
   const [questionId, setQuestionId] = useRecoilState(activeQuestionIdState);
-  const questionList = useRecoilValue(questionListSelector);
+  
   const setActiveQuestion = useSetRecoilState(activeQuestionSelector);
   
   const scrollRef = useRef(null);
@@ -37,23 +43,21 @@ const Draggable = () => {
           <div key={index} className="my-5 animate-in" >
             <div className="inline-flex items-center justify-center whitespace-nowrap border border-solid rounded-lg p-5 space-x-5" onClick={() => handleDraggableClick(data)}>
               
-              <AlignCenter className="w-6 h-6 text-blue-500" />
-              <div className="p-2 rounded-md bg-purple-500 text-white">
-                {data.option}
+             {showDraggableIcon && (<AlignCenter className="w-6 h-6 text-blue-500" />)} 
+              <Dialog >
+                <DialogTrigger>
+                  <div className="p-2 rounded-md bg-purple-500 text-white">
+              
                 <PencilLine className="w-6 h-6 mr-3" />
               </div>
+                </DialogTrigger>
+                <EditSurveyDialog canAddOption={true} questionId={data.id}/>
+              </Dialog>
+              
               <h3 className="text-lg font-bold">{data.question} </h3>
             </div>
           </div>
         ))}
-      </div>
-      <div className="flex justify-between mt-4">
-        <button onClick={scrollUp} className="p-2 bg-slate-400 text-white rounded-lg">
-          <ChevronUp className="w-6 h-6" />
-        </button>
-        <button onClick={scrollDown} className="p-2 bg-slate-400 text-white rounded-lg">
-          <ChevronDown className="w-6 h-6" />
-        </button>
       </div>
     </div>
   );

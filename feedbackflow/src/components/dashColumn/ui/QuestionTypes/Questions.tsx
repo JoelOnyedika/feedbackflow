@@ -14,13 +14,15 @@ const Questions = () => {
   const [selectedType, setSelectedType] = useState('');
  const [showQuestionUi, setShowQuestionUi] = useState(false);
   const generateId = () => '_' + Math.random().toString(36).substr(2, 9);
+  const [questionIdx, setQuestionIdx] = useState(1);
 
   const handleAddQuestion = () => {
-    
+    setQuestionIdx(questionIdx + 1)
     const newQuestion = {
       id: generateId(),
       option: 'short-question', // Default option
       question: 'What do you think about our service?', // Default question text
+      idx: questionIdx,
     };
     setQuestions([...questions, newQuestion]);
   };
@@ -29,7 +31,7 @@ const Questions = () => {
     if (questionId) {
       setQuestions((prevQuestions) =>
         prevQuestions.map((question) =>
-          question.id === questionId
+          question.id === questionId && question.id !== 'intro'
             ? { ...question, option: option }
             : question
         )
@@ -38,14 +40,14 @@ const Questions = () => {
     }
   };
 useEffect(() => {
-   questionId !== null &&
+   questionId !== null && questionId !== 'intro' &&
    setShowQuestionUi(true)
  }, [questionId])
   
   return (
     <div className="p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Question Types</h2>{questionId}
+        <h2 className="text-lg font-semibold">Question Types</h2>
         <div className="flex items-center space-x-4">
           <Button size="icon" variant="ghost" onClick={handleAddQuestion}>
             <Plus className="w-5 h-5 text-blue-500" />
