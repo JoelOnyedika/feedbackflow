@@ -15,8 +15,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {useState} from "react";
-import {signupFormSchema} from "@/lib/types";
+import { useState } from "react";
+import { signupFormSchema } from "@/lib/types";
+
+import { FcGoogle } from "react-icons/fc";
 
 const Signup = () => {
   const form = useForm<z.infer<typeof signupFormSchema>>({
@@ -29,16 +31,16 @@ const Signup = () => {
     },
   });
 
-const onSubmit: SubmitHandler<z.infer<typeof signupFormSchema>> = (formData: any) => {
+  const onSubmit: SubmitHandler<z.infer<typeof signupFormSchema>> = (formData: any) => {
     console.log(formData);
   }
 
   const isLoading = form.formState.isSubmitting;
-const [submitError, setSubmitError] = useState("")
+  const [submitError, setSubmitError] = useState("");
 
   return (
     <div className="w-full h-screen flex justify-center items-center my-4">
-      <div className="p-8 border border-solid rounded-md space-y-5">
+      <div className="w-96 p-8 border border-solid rounded-md space-y-5">  {/* Adjusted width here */}
         <div>
           <h1 className="text-2xl font-bold text-center">Signup</h1>
           <div className="flex justify-center">
@@ -49,10 +51,10 @@ const [submitError, setSubmitError] = useState("")
           </div>
         </div>
         <div>
-          <Button
-            variant="info"
+          <Button 
             className="flex justify-center w-full text-white"
           >
+            <FcGoogle className="text-xl mr-3"/>
             Signup with Google
           </Button>
         </div>
@@ -74,9 +76,6 @@ const [submitError, setSubmitError] = useState("")
                   <FormControl>
                     <Input placeholder="Username" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -95,9 +94,6 @@ const [submitError, setSubmitError] = useState("")
                       type={"email"}
                     />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -112,9 +108,6 @@ const [submitError, setSubmitError] = useState("")
                   <FormControl>
                     <Input placeholder="" {...field} type={"password"} />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

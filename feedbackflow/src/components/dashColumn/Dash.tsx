@@ -1,6 +1,6 @@
 // CenterColumn component
 import React from 'react';
-import {Dashboard, Reviews, Pricing, SurveyBuilder} from '@/components/dashColumn/ui';
+import {Dashboard, Reviews, Pricing, SurveyBuilder, Widget} from '@/components/dashColumn/ui';
 
 const DashColumn = ({ selectedOption }: any) => {
   let centerContent;
@@ -14,7 +14,7 @@ const DashColumn = ({ selectedOption }: any) => {
       return <Dashboard/>
       
       case 'widget':
-      centerContent = <p>This is the widget center column content.</p>;
+        return <Widget/>
       break;
       case 'survey-builder':
       return <SurveyBuilder/>;

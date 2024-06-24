@@ -1,7 +1,7 @@
 const Contact = () => {
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4 whitespace-nowrap">Contact Information</h2>
+      <h2 className="text-md font-bold mb-4 whitespace-nowrap">Contact Information</h2>
       <div className="space-y-4">
         <div className="space-y-1">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300" htmlFor="name">

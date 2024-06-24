@@ -9,7 +9,7 @@ const MultipleChoice = () => {
 
   return (
     <div className="">
-      <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+      <h2 className="text-md font-bold mb-4 text-gray-900 dark:text-gray-100">
         How would you rate your experience?
       </h2>
       <p className="text-gray-600 dark:text-gray-400 mb-6">

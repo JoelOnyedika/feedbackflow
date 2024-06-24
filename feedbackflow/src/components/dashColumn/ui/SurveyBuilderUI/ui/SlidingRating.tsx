@@ -10,7 +10,7 @@ const SlidingRating = () => {
 
   return (
     <div className="">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">
+      <h2 className="text-md font-bold mb-4 text-gray-800 dark:text-gray-200">
         How did you enjoy our service?
       </h2>
       <div className="flex items-center justify-between mb-4">

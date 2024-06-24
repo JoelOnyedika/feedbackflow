@@ -10,7 +10,7 @@ export default function Rating () {
       <div className="container mx-auto max-w-2xl px-4 md:px-6">
         <div className="space-y-6">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
+            <h2 className="text-lg font-bold tracking-tighter sm:text-lg">
               What do you think about this application so far?
             </h2>
           </div>

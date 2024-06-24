@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
-import ReactContextProvider from "@/lib/recoil/RecoilContextProvider"
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,12 +14,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="max-w-[1500px] mx-auto">
-      <body className={inter.className}>
-        <ReactContextProvider>
+    <div className="bg-blue-100">
           {children}
-        </ReactContextProvider>
-        </body>
-    </html>
+    </div>
   );
 }

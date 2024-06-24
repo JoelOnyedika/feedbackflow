@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 const YesOrNo = () => {
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4 whitespace-nowrap">
+      <h2 className="text-md font-bold mb-4 whitespace-nowrap">
         How was your experience?
       </h2>
       <span>

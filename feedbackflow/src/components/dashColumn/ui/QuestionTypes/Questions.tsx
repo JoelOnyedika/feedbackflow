@@ -47,7 +47,7 @@ useEffect(() => {
   return (
     <div className="p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Question Types</h2>
+        <h2 className="text-sm text-blue-500 font-semibold">Add Question</h2>
         <div className="flex items-center space-x-4">
           <Button size="icon" variant="ghost" onClick={handleAddQuestion}>
             <Plus className="w-5 h-5 text-blue-500" />
@@ -73,7 +73,7 @@ useEffect(() => {
                 checked={selectedType === data.option}
               />
               <Label
-                className="flex items-center space-x-2 cursor-pointer"
+                className="flex items-center space-x-2 hover:bg-gray-200 cursor-pointer p-2 rounded-md"
                 htmlFor={data.option}
               >
                 <div
