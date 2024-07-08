@@ -1,7 +1,6 @@
 "use server";
 
 import { z } from "zod";
-import { FormSchema } from "../types";
 // import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies, headers } from "next/headers";
 import {createClient} from '@/lib/supabase'
@@ -13,7 +12,7 @@ dotenv.config({ path: "../../env" });
 export async function actionSignupUser({
   email,
   password,
-}: z.infer<typeof FormSchema>) {
+}) {
   console.log("Email and password are going through", email, password);
   const supabase = createClient()
 
@@ -65,7 +64,7 @@ export async function actionSignupUser({
 export async function actionLoginUser({
   email,
   password,
-}: z.infer<typeof FormSchema>) {
+}) {
   const supabase = createClient()
   try {
     const { error } = await supabase.auth.signInWithPassword({

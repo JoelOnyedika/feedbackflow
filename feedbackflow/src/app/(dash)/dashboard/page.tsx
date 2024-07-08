@@ -1,11 +1,8 @@
 "use client"
 
 import React, { useState } from 'react';
-import Sidebar from '@/components/sidebar/Sidebar';
-import Dash from "@/components/dashColumn/Dash";
 
-
-const Dashboard = () => {
+const ProjBoard = () => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleSidebarOptionClick = (option: any) => {
@@ -14,12 +11,9 @@ const Dashboard = () => {
 
   return (
     <div className="flex">
-      <Sidebar onOptionClick={handleSidebarOptionClick} />
-      <div className="flex-grow flex">
-         <Dash selectedOption={selectedOption} />
-      </div>
+   Create project
     </div>
   );
 };
 
-export default Dashboard;
+export default ProjBoard;
