@@ -77,6 +77,9 @@ const Signup = () => {
           return;
         }
 
+        const cookie = await createSessionCookie(email)
+        console.log(cookie)
+
         setConfirmation(true);
       }
       

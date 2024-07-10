@@ -149,6 +149,10 @@ export async function createSessionCookie(email = null) {
   }
 }
 
+export const getCookies = (cookieName) => {
+  return cookies().get(cookieName)
+}
+
 
 export const signUpWithOAuth = async (provider) => {
   try {
@@ -171,3 +175,12 @@ export const signUpWithOAuth = async (provider) => {
     return { error: { message: "Something went wrong!" } };
   }
 };
+
+
+export const checkUserPlan = (userId) => {
+  const { data, error } = supabase.from('user_subscription').select("*").eq('userId', userId)
+  if (error) {
+    return { data: null, error: error }
+  }
+  return data.planId
+}

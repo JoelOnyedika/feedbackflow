@@ -44,6 +44,7 @@ export const projects = pgTable("projects", {
   id: uuid("id").primaryKey().notNull(),
   userId: uuid("user_id").references(() => profile.id, {onDelete: 'cascade'}),
   name: text("name").notNull(),
+  organizationId: uuid('organization_id').references(() => organization.id, { onDelete: 'cascade' }),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull()
 })
 
@@ -54,10 +55,18 @@ export const projectDashboard = pgTable("project_dashboard", {
   createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull()
 })
 
+export const organization = pgTable('organization', {
+  id:  uuid("id").primaryKey().notNull(),
+  userId: uuid("user_id").references(() => profile.id, {onDelete: 'cascade'}),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull()
+})
+
 ///////////////////////////// DASHBOARD USER REVIEW /////////////////////////////////////////
 export const reviews = pgTable("review", {
   id: uuid("id").primaryKey().notNull(),
   userId: uuid("user_id").references(() => profile.id, {onDelete: 'cascade'}),
+  project: uuid("project_id").references(() => projects.id, {onDelete: 'cascade'}),
   rating: integer("rating").notNull(),
   date: timestamp("date", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
   comment: text("comment").notNull(),
@@ -106,6 +115,7 @@ export const answers = pgTable('answers', {
 export const widgets = pgTable('widgets', {
   id: uuid('id').primaryKey(),
   userId: uuid('user_id').references(() => profile.id).notNull(),
+  project: uuid("project_id").references(() => projects.id, {onDelete: 'cascade'}),
   widgetType: varchar('widget_type', { length: 50 }).notNull(), // 'cyber' or 'exit'
   text: text('text').notNull(),
   font: varchar('font', { length: 50 }).notNull(),

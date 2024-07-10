@@ -86,3 +86,20 @@
                0 0 100px #ff00ff, 
                0 0 150px #ff00ff;
 }
+
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(200, 20%, 80%);
+  }
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
+}
+
+.skeleton-body {
+  width: 75%;
+}

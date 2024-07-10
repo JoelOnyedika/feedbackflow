@@ -1,3 +1,8 @@
+import {createClient} from '@/lib/supabase'
+
+const supabase = createClient()
+
+
 export async function updateUsername({
   username,
   email,
