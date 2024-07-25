@@ -133,14 +133,15 @@ interface SidebarItem {
   name: string;
   option: string;
   icon: any; // Define the type of icon as a React component
+  href: string;
 }
 
 export const sidebarData: SidebarItem[] = [
-    {name: "Dashboard", option: "dashboard", icon: LayoutDashboard},
-    {name: "Reviews", option: "reviews", icon: ScanEye},
-    {name: "Plan", option: "plan", icon: SquareGanttChart},
-    {name: "Survey Builder", option: "survey-builder", icon: Wrench},
-    {name: "Widget", option: "widget", icon: CodeXml}
+    {name: "Dashboard", option: "dashboard", icon: LayoutDashboard, href: "/panel"},
+    {name: "Reviews", option: "reviews", icon: ScanEye, href: "/reviews"},
+    {name: "Plan", option: "plan", icon: SquareGanttChart, href:"/plan"},
+    {name: "Survey Builder", option: "survey-builder", icon: Wrench, href:"/survey-builder"},
+    {name: "Widget", option: "widget", icon: CodeXml, href:"/widget"}
 ]
 
 export const surveyQuestionOptions = [
@@ -179,3 +180,15 @@ export const multipleChoiceOptions = [
     { id: 'excited', emoji: '😆', label: 'Excited' },
     { id: 'frustrated', emoji: '😠', label: 'Frustrated' }
   ];
+
+export const lessThan5StarQuestions = [
+    { text: "How satisfied are you with our product?", type: "rating", options: null, order: 1 },
+    { text: "What improvements would you suggest?", type: "text", options: null, order: 2 },
+    { text: "Would you recommend our product to others?", type: "yesno", options: null, order: 3 }
+  ]
+
+export const fiveStarQuestions = [
+    { text: "Rate our service from 1 to 5", type: "fivestar", options: null, order: 1 },
+    { text: "What did you like most about our service?", type: "text", options: null, order: 2 },
+    { text: "How likely are you to use our service again?", type: "fivestar", options: null, order: 3 }
+  ]

@@ -8,6 +8,14 @@ import {Input} from '@/components/ui/input'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import {getCookies} from '@/lib/serverActions/auth-actions'
 import {getAllUserProjects, createProject, createOrganization, getAllUserOrganizations} from '@/lib/supabase/queries/dashboard'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 
 
 const ProjBoard = () => {
@@ -23,13 +31,9 @@ const ProjBoard = () => {
     mode: 'success' || 'destructive' || null
   })
 
-  useEffect(() => {
-    const cookie = getCookies('userCookie')
-    setUserCookie(cookie)
-    
-    async function getProjects() {
+  async function getProjects() {
       try {
-        const {data, error} = await getAllUserProjects(cookie.id)
+        const {data, error} = await getAllUserProjects(userCookie.id)
         if (error) {
           console.log(error)
           setPopupMessage({ message: 'Whoops, something went wrong while loading your projects. Refresh...', mode: 'destructive' })
@@ -40,12 +44,11 @@ const ProjBoard = () => {
         console.log(error)
         setPopupMessage({ message: 'Whoops, something went wrong while loading your projects. Refresh...', mode: 'destructive' })
       }
-    }
-    getProjects()
+  }
 
-    async function getOrganizations() {
+      async function getOrganizations() {
       try {
-        const {data, error} = await getAllUserOrganizations(cookie.id)
+        const {data, error} = await getAllUserOrganizations(userCookie.id)
         if (error) {
           console.log(error)
           setPopupMessage({ message: 'Whoops, something went wrong while loading your organization. Refresh...', mode: 'destructive' })
@@ -57,31 +60,39 @@ const ProjBoard = () => {
         setPopupMessage({ message: 'Whoops, something went wrong while loading your organization. Refresh...', mode: 'destructive' })
       }
     }
+
+  useEffect(() => {
+    const cookie: any = getCookies('userCookie')
+    setUserCookie(cookie)
+    
+    getProjects()
+
     getOrganizations()
+    // Before deployment add check that if the cookie exist then the get project and org func should run else it should redirect to login page
   }, [])
 
   async function handleCreateOrganization() {
     setPopupMessage({message: "Creating Organization, please wait", mode: 'success'})
-    const { data, error } = await createOrganization(cookie.id, organizationName)
+    const { data, error } = await createOrganization(userCookie.id, organizationName)
     if (error) {
       console.log(error)
       setPopupMessage({ message: 'Whoops could not create organization', mode: 'destructive' })
     }
     console.log(data)
     setPopupMessage({ message: 'Organization was created successfully', mode: 'success' })
-
+await getProjects()
   }
 
   async function handleCreateProject() {
     setPopupMessage({message: "Creating Project, please wait", mode: 'success'})
-    const { data, error } = await createProject(cookie.id, projectName, projectOrganizationId)
+    const { data, error } = await createProject(userCookie.id, projectName, projectOrganizationId)
     if (error) {
       console.log(error)
       setPopupMessage({ message: 'Whoops could not create project', mode: 'destructive' })
     }
     console.log(data)
     setPopupMessage({ message: 'Project was created successfully', mode: 'success' })
-
+ await getProjects()
   }
 
   return (
@@ -142,10 +153,24 @@ const ProjBoard = () => {
                   {projectName.length > 20 && "Your Project name must be longer than twenty characters."}
                 </small>
 
+                <div className="flex">
                 <span className="font-bold">
                  Select Organization
                 </span>
-                  <Button disabled={projectName.length < 4 || projectName.length > 20} onClick={handleCreateProject}>
+                  {organizationData.length > 0 ? (
+<Select>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Organization" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {organizationData.map((data, index) => (
+                          <SelectItem key={index} onClick={() => setProjectOrganizationId(data.id)} value={data.name}>{data.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+</Select>
+) : (<small className="pl-2 text-sm font-bold">No Organization yet</small>)}
+                </div>
+                  <Button disabled={projectName.length < 4 || projectName.length > 20 && projectOrganizationId !== null} onClick={handleCreateProject}>
                     Submit  
                   </Button>
                 

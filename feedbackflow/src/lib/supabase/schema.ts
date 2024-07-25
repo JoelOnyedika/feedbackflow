@@ -63,9 +63,9 @@ export const organization = pgTable('organization', {
 })
 
 ///////////////////////////// DASHBOARD USER REVIEW /////////////////////////////////////////
-export const reviews = pgTable("review", {
+export const reviews = pgTable("reviews", {
   id: uuid("id").primaryKey().notNull(),
-  userId: uuid("user_id").references(() => profile.id, {onDelete: 'cascade'}),
+  //userId: uuid("user_id").references(() => profile.id, {onDelete: 'cascade'}),
   project: uuid("project_id").references(() => projects.id, {onDelete: 'cascade'}),
   rating: integer("rating").notNull(),
   date: timestamp("date", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -74,42 +74,42 @@ export const reviews = pgTable("review", {
 })
 
 ///////////////////////////// DASHBOARD SURVEY /////////////////////////////////////////
-// export const surveys = pgTable('surveys', {
-//   id: serial('id').primaryKey(),
-//   title: text('title').notNull(),
-//   description: text('description'),
-//   user: uuid('user').references(() => profile.id)
-// })
+
+export const surveys = pgTable('surveys', {
+  id: uuid('id').primaryKey(),
+  projectId: integer('project_id').notNull().references(() => projects.id),
+  type: varchar('type', { length: 50 }).notNull(), // '5_star' or 'less_than_5_star'
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow()
+});
+
 
 export const questions = pgTable('questions', {
-  id: uuid('id').notNull().primaryKey(),
-  projectId: uuid('project_id').references(() => projects.id),
-  questionText: text('question_text').notNull(),
-  questionType: varchar('question_type', { length: 50 }).notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull()
-})
-
-// options table for multiple choice questions
-export const options = pgTable('options', {
-  id: uuid('id').primaryKey().notNull(),
-  questionId: uuid('question_id').references(() => questions.id),
-  optionText: text('option_text').notNull()
-})
-
-export const responses = pgTable('responses', {
-  id: uuid('id').primaryKey().notNull(),
-  questionId: uuid('question_id').references(() => questions.id),
-  responseDate: timestamp('response_date').defaultNow()
-})
+  id: uuid('id').primaryKey(),
+  surveyId: integer('survey_id').notNull().references(() => surveys.id),
+  text: text('text').notNull(),
+  type: varchar('type', { length: 50 }).notNull(), // 'multiple_choice', 'rating', etc.
+  options: jsonb('options'), // For storing multiple choice options
+  order: integer('order').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow()
+});
 
 export const answers = pgTable('answers', {
-  id: uuid('id').primaryKey().notNull(),
-  responseId: uuid('response_id').references(() => responses.id),
-  questionId: uuid('question_id').references(() => questions.id),
-  answerText: text('answer_text'),
-  booleanAnswer: boolean('boolean_answer'),
-  integerAnswer: integer('integer_answer')
-})
+  id: uuid('id').primaryKey(),
+  questionId: integer('question_id').notNull().references(() => questions.id),
+  value: text('value').notNull(),
+  options: jsonb('options'),
+  createdAt: timestamp('created_at').defaultNow()
+});
+
+export const responses = pgTable('responses', {
+  id: uuid('id').primaryKey(),
+  surveyId: integer('survey_id').notNull().references(() => surveys.id),
+  questionId: integer('question_id').notNull().references(() => questions.id),
+  answer: text('answer').notNull(),
+  createdAt: timestamp('created_at').defaultNow()
+});
 
 
 export const widgets = pgTable('widgets', {
