@@ -25,25 +25,11 @@ import { MailCheck } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useMemo } from 'react'
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from 'next/link'
 
 const Signup = () => {
   const [confirmation, setConfirmation] = useState(false);
-  // const searchParams = useSearchParams();
-  
-  // const codeExchangeError = useMemo(() => {
-  //   if (!searchParams) return "";
-  //   return searchParams.get("error_description");
-  // }, [searchParams]);
-
-  // const confirmationAndErrorStyles = useMemo(
-  //   () =>
-  //     clsx("bg-primary", {
-  //       "bg-red-500/10": codeExchangeError,
-  //       "border-red-500/50": codeExchangeError,
-  //       "text-red-700": codeExchangeError,
-  //     }),
-  //   [codeExchangeError]
-  // );
+  const [submitError, setSubmitError] = useState("");
 
 
   const form = useForm<z.infer<typeof signupFormSchema>>({
@@ -59,31 +45,33 @@ const Signup = () => {
   const onSubmit: SubmitHandler<z.infer<typeof signupFormSchema>> = async (formData: any) => {
 
     try {
-      console.log(email, username, password)
-      const signupResult = await actionSignupUser({ email, password });
+      console.log(formData)
+      const signupResult = await actionSignupUser(formData);
       console.log("signup result got triggered", signupResult)
 
       if (signupResult.error) {
         setSubmitError(signupResult.error.message);
         form.reset();
         return;
-      }else {
-        const insertResult = await updateUsername({ username, email });
+      } else {
+        const insertResult = await updateUsername(formData);
         console.log("Insert result ", insertResult)
 
-        if (insertResult instanceof Error) {
+        if (insertResult.error) {
+          console.log(insertResult.error)
           setSubmitError("Unable to save username to database");
           form.reset();
           return;
         }
 
-        const cookie = await createSessionCookie(email)
+        const cookie = await createSessionCookie(formData.email)
         console.log(cookie)
 
         setConfirmation(true);
       }
       
     } catch (error) {
+      console.log(error)
       setSubmitError("An unexpected error occurred");
       form.reset();
     }
@@ -107,24 +95,25 @@ const Signup = () => {
   };
 
   const isLoading = form.formState.isSubmitting;
-  const [submitError, setSubmitError] = useState("");
+  
 
   return (
     <div className="w-full h-screen flex justify-center items-center my-4">
-      <div className="p-8 w-1/2 border border-solid rounded-md space-y-5">  {/* Adjusted width here */}
+      <div className="p-8 md:w-1/2 w-full border border-solid rounded-md space-y-5">  {/* Adjusted width here */}
         <div>
-          <h1 className="text-2xl font-bold text-center">Signup</h1>
+          <h1 className="text-2xl font-bold text-center">Create an Account</h1>
           <div className="flex justify-center">
             <span className="mr-2 text-center">Already a user</span>
-            <span className="text-blue-500 hover:underline font-bold">
+            <Link href="/login" className="text-blue-500 hover:underline font-bold">
               Log in
-            </span>
+            </Link>
           </div>
         </div>
         <div>
           <Button 
             className="flex justify-center w-full text-white"
-            onClick={handleSignupWithOAuth('google')}
+            variant={'info'}
+            onClick={() => handleSignupWithOAuth('google')}
           >
             <FcGoogle className="text-xl mr-3"/>
             Signup with Google
@@ -184,18 +173,18 @@ const Signup = () => {
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit" disabled={isLoading}>
+            <Button className="w-full text-white" type="submit" disabled={isLoading} variant={'info'}>
               Submit
             </Button>
           </form>
           {submitError && (
               <Alert>
-                <AlertDescription>{submitError}</AlertDescription>
+                <AlertDescription>{submitError.length > 0 && submitError}</AlertDescription>
               </Alert>
             )}
             {(confirmation) && (
-              <Alert className={` text-white`}>
-                  <MailCheck className="h-4 w-4 text-white" />
+              <Alert className={` text-black`}>
+                  <MailCheck className="h-4 w-4 text-black" />
                 <AlertTitle>
                   {submitError ? "Invalid Link" : "Check your email."}
                 </AlertTitle>

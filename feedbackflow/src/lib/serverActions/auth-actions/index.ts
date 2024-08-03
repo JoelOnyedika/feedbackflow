@@ -12,47 +12,61 @@ dotenv.config({ path: "../../env" });
 export async function actionSignupUser({
   email,
   password,
-}) {
+}: z.infer<typeof FormSchema>) {
   console.log("Email and password are going through", email, password);
-  const supabase = createClient()
-
   try {
-    const { data, error } = await supabase
+    const supabase = await createClient()
+    console.log("Checking email:", email)
+
+    // Check if the user exists in the profile table
+    const { data: existingProfile, error: profileError } = await supabase
       .from("profile")
       .select("*")
-      .eq("email", email);
+      .eq("email", email)
 
-    if (error) {
-      console.error("Error fetching user:", error.message);
+    if (profileError) {
+      console.log("Error checking existing profile:", profileError.message);
       return { error: { message: "An error occurred while checking user existence" } };
     }
 
-    console.log("Data from database:", data);
-
-    if (data && data.length > 0) { // Check if the array has elements
-      console.log("User exists", data[0]);
+    if (existingProfile.length > 0) {
+      console.log("User already exists in profile", existingProfile);
       return { error: { message: "User already exists with this email" } };
-    } else {
-      // Sign up the user
-      const response = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
-        },
-      });
-
-      console.log(response)
-      
-      // Check if sign-up was successful
-      if (response.error) {
-        console.error("Error signing up user:", response.error);
-        return { error: { message: "Error signing up" } };
-      }
-
-      // Return a plain object indicating success
-      return { success: true };
     }
+
+    // If the user doesn't exist in profile, proceed with signup
+    console.log("Signing up new user", email);
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
+      },
+    });
+
+    console.log("Signup response", signUpData);
+    
+    if (signUpError) {
+      console.error("Error signing up user:", signUpError);
+      return { data: null, error: { message: "Error signing up" } };
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Fetch the newly created profile
+    const { data: newProfile, error: newProfileError } = await supabase
+      .from("profile")
+      .select("*")
+      .eq("email", email)
+
+    if (newProfileError) {
+      console.error("Error fetching new profile:", newProfileError.message);
+      return { error: { message: "User created but error fetching profile" } };
+    }
+
+    // Return the new profile data
+    console.log(newProfile)
+    return { data: newProfile, error: null };
   } catch (error) {
     console.error("An unexpected error occurred:", error);
     return { error: { message: "An unexpected error occurred" } };
@@ -60,12 +74,11 @@ export async function actionSignupUser({
 }
 
 
-
 export async function actionLoginUser({
   email,
   password,
 }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   try {
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
@@ -80,7 +93,7 @@ export async function actionLoginUser({
 
 export async function createSessionCookie(email = null) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     let userEmail;
     let fullName;
@@ -93,7 +106,8 @@ export async function createSessionCookie(email = null) {
 
       if (sessionError) {
         console.log('Error fetching session:', sessionError.message);
-        throw sessionError;
+        return { data: null, error: { message: "Error fetching your session. Please refresh" } }
+
       }
 
       const { session } = sessionData;
@@ -105,7 +119,7 @@ export async function createSessionCookie(email = null) {
         id = session.user.id
       } else {
         console.log('Session not found');
-        return;
+        return { data: null, error: { message: "Whoops session does not exist. Please refresh" } }
       }
     } else {
       userEmail = email;
@@ -113,19 +127,23 @@ export async function createSessionCookie(email = null) {
       // Fetch user details using the email
       const { data, error } = await supabase
         .from("profile")
-        .select("username, email, profile_img")
+        .select("*")
         .eq("email", email);
 
-      if (error) throw error;
+      if (error){
+        console.log(error)
+        return { data: null, error: { message: error.message } }
+      };
 
       if (data && data.length > 0) {
+        console.lo(user)
         const user = data[0];
         fullName = user.username;
         avatarUrl = user.avatar_img;
         userEmail = user.email;
       } else {
         console.log('No user found with this email');
-        return;
+        return { data: null, error: { message: "User not found in profile" } }
       }
     }
 
@@ -135,7 +153,9 @@ export async function createSessionCookie(email = null) {
       .update({ username: fullName, profile_img: avatarUrl, email: userEmail })
       .eq("email", userEmail);
 
-    if (updateError) throw updateError;
+    if (updateError) {
+      return { data: null, error: { message: error.message } }
+    };
 
     // Set the user cookie
     cookies().set("userCookie", JSON.stringify({ username: fullName, userEmail, avatarUrl, id }), {
@@ -146,6 +166,8 @@ export async function createSessionCookie(email = null) {
     console.log(cookies().get('userCookie'));
   } catch (error) {
     console.log('Error creating session cookie:', error);
+    return { data: null, error: { message: "Something went wrong, please refresh" } }
+
   }
 }
 
@@ -156,7 +178,7 @@ export const getCookies = (cookieName) => {
 
 export const signUpWithOAuth = async (provider) => {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const origin = headers().get('origin');
 
     const { data, error } = await supabase.auth.signInWithOAuth({

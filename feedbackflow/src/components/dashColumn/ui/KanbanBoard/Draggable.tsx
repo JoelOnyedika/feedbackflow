@@ -1,22 +1,17 @@
-import React, { useRef } from "react";
+'use client'
+
+import React, { useRef, useState } from "react";
 import { AlignCenter, PencilLine, ChevronDown, ChevronUp } from "lucide-react";
-import {
-  lessThanFiveStarQuestionListSelector,
-  activeQuestionSelector,
-} from "@/lib/recoil/selectors";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
-import { activeQuestionIdState } from "@/lib/recoil/atoms";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { EditSurveyDialog } from "@/components/dashColumn/ui/SurveyBuilderUI/ui/EditSurveyDialog";
+import EditSurveyDialog from "@/components/dashColumn/ui/SurveyBuilderUI/ui/EditSurveyDialog";
 
 interface IDraggableProps {
   questionList: any[];
   showDraggableIcon: boolean;
 }
 const Draggable = ({ showDraggableIcon, questionList }: IDraggableProps) => {
-  const [questionId, setQuestionId] = useRecoilState(activeQuestionIdState);
-
-  const setActiveQuestion = useSetRecoilState(activeQuestionSelector);
+  const [questionId, setQuestionId] = useState(null);
 
   const scrollRef = useRef(null);
 
@@ -33,7 +28,6 @@ const Draggable = ({ showDraggableIcon, questionList }: IDraggableProps) => {
   };
 
   const handleDraggableClick = (question: any) => {
-    setActiveQuestion(question);
     setQuestionId(question.id);
   };
 

@@ -2,63 +2,67 @@
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card"
 import { ResponsiveBar } from "@nivo/bar"
 import Sidebar from "@/components/sidebar/Sidebar"
+import Navbar from "@/components/hero/Navbar"
 
 export default function Panel () {
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-grow flex">
-      <main className="flex flex-col gap-6 p-4 md:p-6">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <Card className="">
-          <CardHeader className="space-y-5">
-            <div className="flex items-center justify-between space-x-5">
-              <CardTitle>Latest Reviews</CardTitle>
-            </div>
-            <div className="flex justify-between mt-8">
-              <span className="text-sm text-gray-500 dark:text-gray-400">Stars</span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">Date</span>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-between">
-              <div className="flex items-center gap-0.5">
-                <StarIcon className="h-4 w-4 fill-primary" />
-                <StarIcon className="h-4 w-4 fill-primary" />
-                <StarIcon className="h-4 w-4 fill-primary" />
-                <StarIcon className="h-4 w-4 fill-primary" />
-                <StarIcon className="h-4 w-4 fill-primary" />
+    <>
+      <Navbar />
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-grow flex">
+        <main className="flex flex-col gap-6 p-4 md:p-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <Card className="">
+            <CardHeader className="space-y-5">
+              <div className="flex items-center justify-between space-x-5">
+                <CardTitle>Latest Reviews</CardTitle>
               </div>
-
-              <span className="text-sm text-gray-500 dark:text-gray-400">1st, jan 2024</span>
-            </div>
-          </CardContent>
-          <CardContent>
-            <div className="flex justify-between">
-              <div className="flex items-center gap-0.5">
-                <StarIcon className="h-4 w-4 fill-primary" />
-                <StarIcon className="h-4 w-4 fill-primary" />
-                <StarIcon className="h-4 w-4 fill-primary" />
-                <StarIcon className="h-4 w-4 fill-primary" />
-                <StarIcon className="h-4 w-4 fill-primary" />
+              <div className="flex justify-between mt-8">
+                <span className="text-sm text-gray-500 dark:text-gray-400">Stars</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">Date</span>
               </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-between">
+                <div className="flex items-center gap-0.5">
+                  <StarIcon className="h-4 w-4 fill-primary" />
+                  <StarIcon className="h-4 w-4 fill-primary" />
+                  <StarIcon className="h-4 w-4 fill-primary" />
+                  <StarIcon className="h-4 w-4 fill-primary" />
+                  <StarIcon className="h-4 w-4 fill-primary" />
+                </div>
 
-              <span className="text-sm text-gray-500 dark:text-gray-400">1st, jan 2024</span>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Review Breakdown</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <BarChart className="aspect-[16/9]" />
-          </CardContent>
-        </Card>
+                <span className="text-sm text-gray-500 dark:text-gray-400">1st, jan 2024</span>
+              </div>
+            </CardContent>
+            <CardContent>
+              <div className="flex justify-between">
+                <div className="flex items-center gap-0.5">
+                  <StarIcon className="h-4 w-4 fill-primary" />
+                  <StarIcon className="h-4 w-4 fill-primary" />
+                  <StarIcon className="h-4 w-4 fill-primary" />
+                  <StarIcon className="h-4 w-4 fill-primary" />
+                  <StarIcon className="h-4 w-4 fill-primary" />
+                </div>
+
+                <span className="text-sm text-gray-500 dark:text-gray-400">1st, jan 2024</span>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Review Breakdown</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <BarChart className="aspect-[16/9]" />
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+        </div>
       </div>
-    </main>
-      </div>
-    </div>
+    </>
     
   )
 }

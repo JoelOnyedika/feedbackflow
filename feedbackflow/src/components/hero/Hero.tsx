@@ -16,7 +16,7 @@ const Hero = () => {
               <span>Feedback and review automation built for tech, powered by AI</span>
             </div>
             <div className="my-5">
-              <Button variant="info">
+              <Button variant="info" className="text-white">
                 <Link href="/signup">Get started</Link>
               </Button>
             </div>

@@ -77,27 +77,27 @@ export const reviews = pgTable("reviews", {
 
 export const surveys = pgTable('surveys', {
   id: uuid('id').primaryKey(),
-  projectId: integer('project_id').notNull().references(() => projects.id),
+  projectId: uuid('project_id').notNull().references(() => projects.id),
   type: varchar('type', { length: 50 }).notNull(), // '5_star' or 'less_than_5_star'
-  createdAt: timestamp('created_at').defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow()
 });
 
 
 export const questions = pgTable('questions', {
   id: uuid('id').primaryKey(),
-  surveyId: integer('survey_id').notNull().references(() => surveys.id),
+  surveyId: uuid('survey_id').notNull().references(() => surveys.id),
   text: text('text').notNull(),
   type: varchar('type', { length: 50 }).notNull(), // 'multiple_choice', 'rating', etc.
   options: jsonb('options'), // For storing multiple choice options
-  order: integer('order').notNull(),
+  //order: integer('order').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow()
 });
 
 export const answers = pgTable('answers', {
   id: uuid('id').primaryKey(),
-  questionId: integer('question_id').notNull().references(() => questions.id),
+  questionId: uuid('question_id').notNull().references(() => questions.id),
   value: text('value').notNull(),
   options: jsonb('options'),
   createdAt: timestamp('created_at').defaultNow()
@@ -105,8 +105,8 @@ export const answers = pgTable('answers', {
 
 export const responses = pgTable('responses', {
   id: uuid('id').primaryKey(),
-  surveyId: integer('survey_id').notNull().references(() => surveys.id),
-  questionId: integer('question_id').notNull().references(() => questions.id),
+  surveyId: uuid('survey_id').notNull().references(() => surveys.id),
+  questionId: uuid('question_id').notNull().references(() => questions.id),
   answer: text('answer').notNull(),
   createdAt: timestamp('created_at').defaultNow()
 });

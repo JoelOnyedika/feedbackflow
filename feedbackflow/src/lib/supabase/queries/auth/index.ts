@@ -1,14 +1,13 @@
 import {createClient} from '@/lib/supabase'
 
-const supabase = createClient()
-
-
 export async function updateUsername({
   username,
   email,
-}: z.infer<typeof FormSchema>) {
+}) {
   try {
     // Query the profile table for the given email
+    const supabase = await createClient()
+    console.log("the damn email", email)
     const { data, error } = await supabase
       .from('profile')
       .select('*')
@@ -22,14 +21,14 @@ export async function updateUsername({
 
     // Check if the profile was found
     if (data.length === 0) {
-      console.warn('No profile found for the given email:', email);
-      throw new Error('No profile found for the given email');
+      console.log('No profile found for the given email:', email);
+      return {data: null, error: {message: "No profile found for the given email"}}
     }
 
     // Update the username in the profile table
     const { id } = data[0]; // Assuming the profile table has an 'id' column
-    console.log(id)
-    const { updateError } = await supabase
+    console.log(id, username)
+    const { data: updateData, error: updateError } = await supabase
       .from('profile')
       .update({ username })
       .eq('id', id);
@@ -37,13 +36,14 @@ export async function updateUsername({
     // Handle any errors from the update
     if (updateError) {
       console.log('Error updating username:', updateError);
-      throw new Error('Could not update username');
+      return {data: null, error: {message: "Could not update username"}}
     }
 
-    console.log('Username successfully updated');
+    console.log('Username successfully updated', updateData);
+    return { data: updateData, error: null }
   } catch (error) {
     // General error handling
     console.log('An error occurred:', error);
-    throw new Error('An error occurred while updating the username');
+    return {data: null, error: {message: "An unexpected error occoured"}}
   }
 }

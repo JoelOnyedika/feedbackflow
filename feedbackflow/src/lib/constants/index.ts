@@ -2,13 +2,11 @@
 import { MessagesSquare, Sparkles, Laugh, TextCursor, Command, PartyPopper, LayoutDashboard, ScanEye, SquareGanttChart, Wrench, CodeXml, Delete, Check, SlidersVertical, List, User, } from 'lucide-react';
 
 export const navbarRoutes = [
-  { name: 'Home', route: '/Home' },
+  { name: 'Home', route: '/' },
   { name: 'Dashboard', route: '/dashboard' },
   { name: 'Featues', route: '/featues' },
   { name: 'About', route: '/about' },
   { name: 'Contact', route: '/contact' },
-  { name: 'Login', route: '/login' },
-  { name: 'Sign Up', route: '/signup' },
   
 ];
 
@@ -182,13 +180,13 @@ export const multipleChoiceOptions = [
   ];
 
 export const lessThan5StarQuestions = [
-    { text: "How satisfied are you with our product?", type: "rating", options: null, order: 1 },
-    { text: "What improvements would you suggest?", type: "text", options: null, order: 2 },
-    { text: "Would you recommend our product to others?", type: "yesno", options: null, order: 3 }
+    { question: "How satisfied are you with our product?", type: "rating", options: null, order: 1 },
+    { question: "What improvements would you suggest?", type: "text", options: null, order: 2 },
+    { question: "Would you recommend our product to others?", type: "yesno", options: null, order: 3 }
   ]
 
 export const fiveStarQuestions = [
-    { text: "Rate our service from 1 to 5", type: "fivestar", options: null, order: 1 },
-    { text: "What did you like most about our service?", type: "text", options: null, order: 2 },
-    { text: "How likely are you to use our service again?", type: "fivestar", options: null, order: 3 }
+    { question: "Rate our service from 1 to 5", type: "fivestar", options: null, order: 1 },
+    { question: "What did you like most about our service?", type: "text", options: null, order: 2 },
+    { question: "How likely are you to use our service again?", type: "fivestar", options: null, order: 3 }
   ]

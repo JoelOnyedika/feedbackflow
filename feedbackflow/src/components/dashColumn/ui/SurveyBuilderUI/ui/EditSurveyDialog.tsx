@@ -10,7 +10,7 @@ import { lessThanFiveStarQuestionListSelector } from '@/lib/recoil/selectors';
 import { questionListState } from '@/lib/recoil/atoms';
 import { X } from 'lucide-react';
 
-export function EditSurveyDialog({ canAddOption, questionId }) {
+export default function EditSurveyDialog({ canAddOption, questionId }) {
   const [name, setName] = useState("");
   const [questionState, setQuestionState] = useRecoilState(questionListState);
   const [options, setOptions] = useState([]);

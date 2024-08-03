@@ -8,6 +8,27 @@
       "when": 1720387017737,
       "tag": "0000_dear_bloodstorm",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1722031416490,
+      "tag": "0001_boring_firebird",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1722191117784,
+      "tag": "0002_certain_shaman",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1722191488457,
+      "tag": "0003_funny_wilson_fisk",
+      "breakpoints": true
     }
   ]
 }

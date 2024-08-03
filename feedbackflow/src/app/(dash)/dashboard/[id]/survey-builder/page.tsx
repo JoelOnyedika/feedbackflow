@@ -31,8 +31,8 @@ const SurveyBuilder = () => {
 
       if (data.length === 0) {
         const [lessThan5Data, fiveStarData] = await Promise.all([
-          createSurveyData('less_than_5_star', id),
-          createSurveyData('5_star', id)
+          createSurveyData('short-question', id),
+          createSurveyData('short-question', id)
         ]);
 
         await Promise.all([
@@ -51,7 +51,7 @@ const SurveyBuilder = () => {
   };
 
   useEffect(() => {
-    fetchOrCreateSurvey();
+    //fetchOrCreateSurvey();
   }, [id]);
 
   const renderQuestion = (type, questionId) => {
@@ -105,7 +105,7 @@ const SurveyBuilder = () => {
               <div className="flex-grow">
                 <Draggable
                   showDraggableIcon={true}
-                  questionList={surveyData[0].questions || []}
+                  questionList={surveyData[0]}
                 />
               </div>
               <div className="bg-white border border-slate-200 mt-5 py-10 px-10 rounded-lg shadow-lg dark:bg-gray-800 w-96 h-96 break-words overflow-wrap relative flex flex-col justify-center items-center">
@@ -121,8 +121,7 @@ const SurveyBuilder = () => {
 
               <div className="flex-grow">
                 <Questions
-                  handleQuestionTypeChange={setQuestionType}
-                  selectedType={questionType}
+                  surveyId={surveyData[0].id}
                 />
               </div>
             </div>
@@ -133,7 +132,7 @@ const SurveyBuilder = () => {
               <div className="flex-grow">
                 <Draggable
                   showDraggableIcon={true}
-                  questionList={surveyData[1].questions || []}
+                  questionList={surveyData[1]}
                 />
               </div>
               <div className="bg-white border border-slate-200 mt-5 py-10 px-10 rounded-lg shadow-lg dark:bg-gray-800 w-96 h-96 break-words overflow-wrap relative flex flex-col justify-center items-center">
