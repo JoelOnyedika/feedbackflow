@@ -14,65 +14,50 @@ export async function actionSignupUser({
   password,
 }: z.infer<typeof FormSchema>) {
   console.log("Email and password are going through", email, password);
-  try {
-    const supabase = await createClient()
-    console.log("Checking email:", email)
+  const supabase = await createClient()
 
-    // Check if the user exists in the profile table
-    const { data: existingProfile, error: profileError } = await supabase
+  try {
+    const { data, error } = await supabase
       .from("profile")
       .select("*")
-      .eq("email", email)
+      .eq("email", email);
 
-    if (profileError) {
-      console.log("Error checking existing profile:", profileError.message);
+    if (error) {
+      console.error("Error fetching user:", error.message);
       return { error: { message: "An error occurred while checking user existence" } };
     }
 
-    if (existingProfile.length > 0) {
-      console.log("User already exists in profile", existingProfile);
+    console.log("Data from database:", data);
+
+    if (data && data.length > 0) { // Check if the array has elements
+      console.log("User exists", data[0]);
       return { error: { message: "User already exists with this email" } };
+    } else {
+      // Sign up the user
+      const response = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
+        },
+      });
+
+      console.log(response)
+      
+      // Check if sign-up was successful
+      if (response.error) {
+        console.error("Error signing up user:", response.error);
+        return { error: { message: "Error signing up" } };
+      }
+
+      // Return a plain object indicating success
+      return { data: data, error: null };
     }
-
-    // If the user doesn't exist in profile, proceed with signup
-    console.log("Signing up new user", email);
-    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
-      },
-    });
-
-    console.log("Signup response", signUpData);
-    
-    if (signUpError) {
-      console.error("Error signing up user:", signUpError);
-      return { data: null, error: { message: "Error signing up" } };
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Fetch the newly created profile
-    const { data: newProfile, error: newProfileError } = await supabase
-      .from("profile")
-      .select("*")
-      .eq("email", email)
-
-    if (newProfileError) {
-      console.error("Error fetching new profile:", newProfileError.message);
-      return { error: { message: "User created but error fetching profile" } };
-    }
-
-    // Return the new profile data
-    console.log(newProfile)
-    return { data: newProfile, error: null };
   } catch (error) {
     console.error("An unexpected error occurred:", error);
     return { error: { message: "An unexpected error occurred" } };
   }
 }
-
 
 export async function actionLoginUser({
   email,
@@ -171,8 +156,13 @@ export async function createSessionCookie(email = null) {
   }
 }
 
-export const getCookies = (cookieName) => {
-  return cookies().get(cookieName)
+export async function getCookies() {
+  try {
+    const userCookies = cookies().get("userCookie");
+    return userCookies;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 

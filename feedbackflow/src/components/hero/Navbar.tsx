@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetClose,
@@ -14,16 +13,44 @@ import {
 } from "@/components/ui/sheet";
 import { navbarRoutes } from "@/lib/constants/index";
 import { AlignJustify, Home, User, Settings, HelpCircle } from "lucide-react";
+import { getCookies } from '@/lib/serverActions/auth-actions'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { menuItems } from '@/lib/constants'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isUserSignedUp, setIsUserSignedUp] = React.useState(false)
 
-  const icons = {
-    Home: <Home />,
-    User: <User />,
-    Settings: <Settings />,
-    Help: <HelpCircle />,
-  };
+  async function getUserCookie() {
+    try {
+      const userCookie = await getCookies('userCookie')
+      if (userCookie) {
+        setIsUserSignedUp(true)
+      }  
+    } catch(error) {
+      console.log('Error with fetching cookies', error)
+    }
+      
+  }
+
+  React.useEffect(() => {
+    getUserCookie()
+  }, [])
 
   return (
     <nav className="w-full px-4 py-2 shadow-md bg-white">
@@ -38,13 +65,58 @@ const Navbar = () => {
               href={route.route}
               className="flex items-center space-x-2 hover:text-blue-600 transition-colors"
             >
+              <route.icon  className="w-4 h-4"/>
               <span>{route.name}</span>
             </Link>
           ))}
         </div>
 
         <div className="md:flex hidden space-x-4">
-          <Link
+          { isUserSignedUp ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                 <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  {menuItems.map((item, index) => (
+                    item.isSubMenu ? (
+                      <DropdownMenuSub key={index}>
+                        <DropdownMenuSubTrigger>
+                          <item.icon className="mr-2 h-4 w-4" />
+                          <span>{item.text}</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                          <DropdownMenuSubContent>
+                            {item.subItems.map((subItem, subIndex) => (
+                              <DropdownMenuItem key={subIndex} disabled={subItem.disabled}>
+                                <subItem.icon className="mr-2 h-4 w-4" />
+                                <span>{subItem.text}</span>
+                              </DropdownMenuItem>
+                            ))}
+                            <DropdownMenuSeparator />
+                          </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                      </DropdownMenuSub>
+                    ) : (
+                      <DropdownMenuItem key={index} disabled={item.disabled}>
+                        <item.icon className="mr-2 h-4 w-4" />
+                        <span>{item.text}</span>
+                      </DropdownMenuItem>
+                    )
+                  ))}
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+              </DropdownMenuContent>
+            </DropdownMenu>
+            ) : (
+          <>
+            <Link
             href={"/login"}
             className="flex items-center space-x-2 hover:text-blue-600 transition-colors"
           >
@@ -57,6 +129,8 @@ const Navbar = () => {
           >
             Signup
           </Link>
+          </>) }
+          
         </div>
 
         {/* Mobile menu */}
@@ -78,6 +152,7 @@ const Navbar = () => {
                       className="flex items-center space-x-2 hover:text-blue-600 transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
+                      <route.icon  className="w-4 h-4"/>
                       <span>{route.name}</span>
                     </Link>
                   </SheetClose>

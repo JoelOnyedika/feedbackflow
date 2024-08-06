@@ -1,12 +1,12 @@
 // constants.js
-import { MessagesSquare, Sparkles, Laugh, TextCursor, Command, PartyPopper, LayoutDashboard, ScanEye, SquareGanttChart, Wrench, CodeXml, Delete, Check, SlidersVertical, List, User, } from 'lucide-react';
+import { CreditCard, Settings, Keyboard, Users, UserPlus, Mail, MessageSquare, PlusCircle, Plus, Github, LifeBuoy, Cloud, LogOut, MessagesSquare, Home, Sparkles, Laugh, CircleUser, TextCursor, BadgeInfo, Feather, Command, PartyPopper, LayoutDashboard, ScanEye, SquareGanttChart, Wrench, CodeXml, Delete, Check, SlidersVertical, List, User, } from 'lucide-react';
 
 export const navbarRoutes = [
-  { name: 'Home', route: '/' },
-  { name: 'Dashboard', route: '/dashboard' },
-  { name: 'Featues', route: '/featues' },
-  { name: 'About', route: '/about' },
-  { name: 'Contact', route: '/contact' },
+  { name: 'Home', route: '/', icon: Home },
+  { name: 'Dashboard', route: '/dashboard', icon: LayoutDashboard },
+  { name: 'Featues', route: '/featues', icon: Feather  },
+  { name: 'About', route: '/about', icon: BadgeInfo },
+  { name: 'Contact', route: '/contact', icon: CircleUser },
   
 ];
 
@@ -190,3 +190,13 @@ export const fiveStarQuestions = [
     { question: "What did you like most about our service?", type: "text", options: null, order: 2 },
     { question: "How likely are you to use our service again?", type: "fivestar", options: null, order: 3 }
   ]
+
+export const menuItems = [
+  { icon: User, text: "Profile" },
+  { icon: CreditCard, text: "Billing" },
+  { icon: Settings, text: "Settings" },
+  { icon: Github, text: "GitHub" },
+  { icon: LifeBuoy, text: "Support" },
+  { icon: Cloud, text: "API", disabled: true },
+  { icon: LogOut, text: "Log out" }
+];

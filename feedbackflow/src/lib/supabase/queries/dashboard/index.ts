@@ -3,13 +3,14 @@
 import {createClient} from '@/lib/supabase'
 import { v4 as uuidv4 } from 'uuid'
 
-const supabase = createClient()
 
 export const getAllUserProjects = async (userId) => {
      try {
-       const { data, error } = supabase.from('projects')
+       const supabase = await createClient()
+
+       const { data, error } = await supabase.from('projects')
                               .select("*")
-                              .eq('userId', userId)
+                              .eq('user_id', userId)
           if (error) {
                console.log(error)
                return { data: null, error }
@@ -26,9 +27,10 @@ export const getAllUserProjects = async (userId) => {
 
 export const getAllUserOrganizations = async (userId) => {
      try {
-       const { data, error } = supabase.from('organization')
+          const supabase = await createClient()
+       const { data, error } = await supabase.from('organization')
                               .select("*")
-                              .eq('userId', userId)
+                              .eq('user_id', userId)
           if (error) {
                console.log(error)
                return { data: null, error }
@@ -47,7 +49,8 @@ export const getAllUserOrganizations = async (userId) => {
 export const createOrganization = async (userId, name) => {
      const myUUID = uuidv4()
      try {
-          const { data, error } = supabase.from('organization').insert({ id: myUUID, userId: userId, name: name  })
+          const supabase = await createClient()
+          const { data, error } = await supabase.from('organization').insert({ id: myUUID, user_id: userId, name: name  })
           if (error) {
                console.log(error)
                return { data: null, error }
@@ -64,7 +67,8 @@ export const createOrganization = async (userId, name) => {
 export const createProject = async (userId, name, organization_id) => {
      const myUUID = uuidv4()
      try {
-          const { data, error } = supabase.from('projects').insert({ id: myUUID, userId: userId, name: name, organization_id: organization_id  })
+          const supabase = await createClient()
+          const { data, error } = await supabase.from('projects').insert({ id: myUUID, user_id: userId, name: name, organization_id: organization_id  })
           if (error) {
                console.log(error)
                return { data: null, error }

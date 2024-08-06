@@ -42,41 +42,42 @@ const Signup = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof signupFormSchema>> = async (formData: any) => {
-
+  const onSubmit = async ({
+    email,
+    password,
+    username,
+  }: z.infer<typeof signupFormSchema>) => {
     try {
-      console.log(formData)
-      const signupResult = await actionSignupUser(formData);
+      console.log(email, username, password)
+      const signupResult = await actionSignupUser({ email, password });
       console.log("signup result got triggered", signupResult)
 
       if (signupResult.error) {
+        console.log(signupResult.error)
         setSubmitError(signupResult.error.message);
         form.reset();
         return;
-      } else {
-        const insertResult = await updateUsername(formData);
+      } 
+      const insertResult = await updateUsername(username, email);
         console.log("Insert result ", insertResult)
 
         if (insertResult.error) {
-          console.log(insertResult.error)
           setSubmitError("Unable to save username to database");
           form.reset();
           return;
         }
 
-        const cookie = await createSessionCookie(formData.email)
-        console.log(cookie)
-
         setConfirmation(true);
-      }
+
+      const cookie = await createSessionCookie(email)
+      console.log(email)
       
     } catch (error) {
       console.log(error)
       setSubmitError("An unexpected error occurred");
       form.reset();
     }
-    console.log(formData);
-  }
+  };
 
 
   const handleSignupWithOAuth = async (provider) => {
