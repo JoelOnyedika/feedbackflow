@@ -44,16 +44,18 @@ export const projects = pgTable("projects", {
   id: uuid("id").primaryKey().notNull(),
   userId: uuid("user_id").references(() => profile.id, {onDelete: 'cascade'}),
   name: text("name").notNull(),
+  bgColor: text('bg_color').notNull(),
+  description: text('description').notNull(),
   organizationId: uuid('organization_id').references(() => organization.id, { onDelete: 'cascade' }),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull()
 })
 
-export const projectDashboard = pgTable("project_dashboard", {
-  id: uuid("id").primaryKey().notNull(),
-  userId: uuid("user_id").references(() => profile.id, {onDelete: 'cascade'}),
-  project: uuid("project_id").references(() => projects.id, {onDelete: 'cascade'}),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull()
-})
+// export const projectDashboard = pgTable("project_dashboard", {
+//   id: uuid("id").primaryKey().notNull(),
+//   userId: uuid("user_id").references(() => profile.id, {onDelete: 'cascade'}),
+//   project: uuid("project_id").references(() => projects.id, {onDelete: 'cascade'}),
+//   createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull()
+// })
 
 export const organization = pgTable('organization', {
   id:  uuid("id").primaryKey().notNull(),

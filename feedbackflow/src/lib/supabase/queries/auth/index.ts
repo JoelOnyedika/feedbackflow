@@ -53,3 +53,21 @@ export const updateUsername = async (
     return {data: null, error: {message:'An error occurred while updating the username'}}
   }
 }
+
+export const checkUserPlan = async (userId) => {
+  try {
+     const supabase = await createClient()
+     const { data, error } = await supabase.from('profile')
+                              .select("*")
+                              .eq('id', userId)
+    if (error) {
+      console.log('Error fetching user plan:', error);
+      return {data: null, error}
+    }
+    console.log(data)
+    return { data, error: null }
+  } catch(error) {
+     console.log(error)
+     return { data: null, error: { message: "Whoops something went wrong" } }     
+  }   
+}

@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import ReactContextProvider from "@/lib/recoil/RecoilContextProvider"
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["greek"] });
 
 export const metadata: Metadata = {
   title: "Feedback flow - Collect feedback and make your dream application flow",
